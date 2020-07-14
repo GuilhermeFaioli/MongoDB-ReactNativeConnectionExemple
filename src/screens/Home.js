@@ -26,6 +26,7 @@ const Home = () => {
                     <Image 
                     style={{width: 60, height: 60, borderRadius: 30}}
                     source={{uri: "https://images.unsplash.com/photo-1551712702-4b7335dd8706?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80"}}
+                    //Image from: https://unsplash.com/
                     />
                     <View style={{marginLeft: 10}}>
                         <Text style={styles.text}>{item.name}</Text>
