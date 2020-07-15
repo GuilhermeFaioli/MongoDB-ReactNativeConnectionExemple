@@ -3,12 +3,12 @@ const app = express()
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 require('./Employee')
-require('./.env')
+require('./.env') // import of .env with your mongoDB Connection and password
 
 app.use(bodyParser.json())
 const Employee = mongoose.model("employee");
 
-const mongoUri = CONNECTION
+const mongoUri = CONNECTION// imported of .env (mongoDB connection)
 mongoose.connect(mongoUri, {
     useNewUrlParser: true,
     useUnifiedTopology: true
