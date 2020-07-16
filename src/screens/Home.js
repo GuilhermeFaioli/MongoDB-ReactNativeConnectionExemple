@@ -2,22 +2,12 @@ import React from 'react';
 import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
 import { Card, FAB } from 'react-native-paper'
 
-const Home = () => {
+const Home = (props) => {
     const data = [
         {id: 1, name: "Guilherme", position: "Mobile Dev"},
         {id: 2, name: "Ana", position: "Web Dev"},
         {id: 3, name: "Thiago", position: "Software Engenier"},
-        {id: 4, name: "Natalia", position: "ML expert"},
-        {id: 5, name: "Natalia", position: "ML expert"},
-        {id: 6, name: "Natalia", position: "ML expert"},
-        {id: 7, name: "Natalia", position: "ML expert"},
-        {id: 8, name: "Natalia", position: "ML expert"},
-        {id: 9, name: "Natalia", position: "ML expert"},
-        {id: 10, name: "Natalia", position: "ML expert"},
-        {id: 11, name: "Natalia", position: "ML expert"},
-        {id: 12, name: "Natalia", position: "ML expert"},
-        {id: 13, name: "Natalia", position: "ML expert"},
-        {id: 14, name: "Natalia", position: "ML expert"},
+        {id: 4, name: "Natalia", position: "ML expert"}
     ]
     const renderList = ((item) => {
         return (
@@ -37,7 +27,7 @@ const Home = () => {
         )
     })
     return (
-        <View>
+        <View style={{flex: 1}}>
             <FlatList 
                 data={data}
                 renderItem={({item}) => {
@@ -50,7 +40,7 @@ const Home = () => {
                 small={false}
                 icon="plus"
                 theme={{colors: {accent: "#006aff"}}}
-                onPress={() => console.log('Pressed')}
+                onPress={() => props.navigation.navigate("Create")}
             />
         </View>
         
