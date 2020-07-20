@@ -2,16 +2,16 @@ import React from 'react';
 import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
 import { Card, FAB } from 'react-native-paper'
 
-const Home = (props) => {
+const Home = ({navigation}) => {
     const data = [
-        {id: 1, name: "Guilherme", position: "Mobile Dev"},
-        {id: 2, name: "Ana", position: "Web Dev"},
-        {id: 3, name: "Thiago", position: "Software Engenier"},
-        {id: 4, name: "Natalia", position: "ML expert"}
+        {id: 1, name: "Guilherme", email:"Guilherme@abc.com", salary: "R$8000,00", phone:"123", position: "Mobile Dev", picture: "https://images.unsplash.com/photo-1551712702-4b7335dd8706?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80"},
+        {id: 2, name: "Denise", email:"Denise@abc.com", salary: "R$7500,00", phone:"124", position: "Web Dev", picture: "https://images.unsplash.com/photo-1551712702-4b7335dd8706?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80"},
+        {id: 3, name: "Carlos", email:"Carlos@abc.com", salary: "R$6000,00", phone:"125", position: "ml Dev", picture: "https://images.unsplash.com/photo-1551712702-4b7335dd8706?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80"}
+        
     ]
     const renderList = ((item) => {
         return (
-            <Card style={styles.myCard}>
+            <Card style={styles.myCard} onPress={() => navigation.navigate("Profile", {item})}>
                 <View style={styles.cardView}>
                     <Image 
                     style={{width: 60, height: 60, borderRadius: 30}}
@@ -40,7 +40,8 @@ const Home = (props) => {
                 small={false}
                 icon="plus"
                 theme={{colors: {accent: "#006aff"}}}
-                onPress={() => props.navigation.navigate("Create")}
+                onPress={() => navigation.navigate("Create")}
+                //props.navigation.navigate("Create") o navigation foi desestruturado das props
             />
         </View>
         
