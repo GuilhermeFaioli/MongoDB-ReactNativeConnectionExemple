@@ -1,21 +1,23 @@
-import React from 'react';
-import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
+import React, { useEffec, useState, useEffect } from 'react';
+import { StyleSheet, Text, View, Image, FlatList, ActivityIndicator } from 'react-native';
 import { Card, FAB } from 'react-native-paper'
 
 const Home = ({navigation}) => {
-    const data = [
-        {id: 1, name: "Guilherme", email:"Guilherme@abc.com", salary: "R$8000,00", phone:"123", position: "Mobile Dev", picture: "https://images.unsplash.com/photo-1551712702-4b7335dd8706?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80"},
-        {id: 2, name: "Denise", email:"Denise@abc.com", salary: "R$7500,00", phone:"124", position: "Web Dev", picture: "https://images.unsplash.com/photo-1551712702-4b7335dd8706?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80"},
-        {id: 3, name: "Carlos", email:"Carlos@abc.com", salary: "R$6000,00", phone:"125", position: "ml Dev", picture: "https://images.unsplash.com/photo-1551712702-4b7335dd8706?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80"}
-        
-    ]
+    const [data, setData] = useState([])
+    const [loading, setLoading] = useState(true)
+    useEffect(() => {
+        fetch("http://10.0.2.2:3000/").then(res => res.json()).then(results => {
+            setData(results)
+            setLoading(false)
+        })
+    },[])
     const renderList = ((item) => {
         return (
             <Card style={styles.myCard} onPress={() => navigation.navigate("Profile", {item})}>
                 <View style={styles.cardView}>
                     <Image 
                     style={{width: 60, height: 60, borderRadius: 30}}
-                    source={{uri: "https://images.unsplash.com/photo-1551712702-4b7335dd8706?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80"}}
+                    source={{uri: item.picture}}
                     //Image from: https://unsplash.com/
                     />
                     <View style={{marginLeft: 10}}>
@@ -28,13 +30,17 @@ const Home = ({navigation}) => {
     })
     return (
         <View style={{flex: 1}}>
-            <FlatList 
-                data={data}
-                renderItem={({item}) => {
-                    return renderList(item)
-                }}
-                keyExtractor={item => `${item.id}`}
-            />
+            {loading?
+                <ActivityIndicator size="large" />
+                :<FlatList 
+                    data={data}
+                    renderItem={({item}) => {
+                        return renderList(item)
+                    }}
+                    keyExtractor={item => `${item._id}`}
+                />
+            }
+            
             <FAB
                 style={styles.fab}
                 small={false}
