@@ -1,15 +1,22 @@
 import React, { useEffec, useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Image, FlatList, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, Image, FlatList, Alert } from 'react-native';
 import { Card, FAB } from 'react-native-paper'
 
 const Home = ({navigation}) => {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
-    useEffect(() => {
+
+    const fetchData = () => {
         fetch("http://10.0.2.2:3000/").then(res => res.json()).then(results => {
             setData(results)
             setLoading(false)
+        }).catch(err=>{
+            Alert.alert("someting went wrong")
         })
+    }
+
+    useEffect(() => {
+        fetchData()
     },[])
     const renderList = ((item) => {
         return (
@@ -30,16 +37,16 @@ const Home = ({navigation}) => {
     })
     return (
         <View style={{flex: 1}}>
-            {loading?
-                <ActivityIndicator size="large" />
-                :<FlatList 
-                    data={data}
-                    renderItem={({item}) => {
-                        return renderList(item)
-                    }}
-                    keyExtractor={item => `${item._id}`}
-                />
-            }
+            <FlatList 
+                data={data}
+                renderItem={({item}) => {
+                    return renderList(item)
+                }}
+                keyExtractor={item => `${item._id}`}
+                onRefresh={() => fetchData()}
+                refreshing={loading}
+            />
+            
             
             <FAB
                 style={styles.fab}

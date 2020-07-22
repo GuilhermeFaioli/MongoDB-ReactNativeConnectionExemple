@@ -22,6 +22,8 @@ mongoose.connection.on("error", (err) => {
     console.log("Error", err)
 })
 
+mongoose.set('useFindAndModify', false);
+
 app.get('/', (req, res) => {
     Employee.find({}).then(data => {
         res.send(data)
@@ -59,6 +61,7 @@ app.post('/delete', (req, res) => {
 
 app.post('/update', (req, res) => {
     Employee.findByIdAndUpdate(req.body.id, {
+        
         name: req.body.name,
         email: req.body.email,
         phone: req.body.phone,

@@ -1,16 +1,34 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image, Linking, Platform } from 'react-native'
+import { View, Text, StyleSheet, Image, Linking, Platform, Alert } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Title, Card, Button } from 'react-native-paper'
 import { MaterialIcons, Entypo } from '@expo/vector-icons'
+import CreateEmployee from './CreateEmployee'
 
 const Profile = (props) => {
     const {_id, name, picture, salary, phone, position, email} = props.route.params.item
+    const deleteEmployee = () => {
+        fetch("http://10.0.2.2:3000/delete", {
+            method: "post",
+            headers:{
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id: _id
+            })
+        }).then(res=> res.json())
+        .then(deletedEmp => {
+            Alert.alert(`${deletedEmp.name} deleted`)
+            props.navigation.navigate("Home")
+        }).catch(err=>{
+            Alert.alert("someting went wrong")
+        })
+    }
     const openDial = () => {
         if(Platform.OS === "android") {
-            Linking.openURL("tel: 311234-5678")
+            Linking.openURL(`tel: ${phone}`)
         } else {
-            Linking.openURL("telprompt: 311234-5678")
+            Linking.openURL(`telprompt: ${phone}`)
         }
     }
 
@@ -52,10 +70,15 @@ const Profile = (props) => {
             </Card>
 
             <View style={styles.buttonView}>
-                <Button icon="account-edit" theme={theme} mode="contained" onPress={() => console.log('Pressed')}>
+                <Button icon="account-edit" theme={theme} mode="contained" 
+                    onPress={() => {
+                        props.navigation.navigate("Create",
+                        {_id, name, picture, salary, phone, position, email})
+                    }
+                }>
                     Edit
                 </Button>
-                <Button icon="delete" theme={theme} mode="contained" onPress={() => console.log('Pressed')}>
+                <Button icon="delete" theme={theme} mode="contained" onPress={() => deleteEmployee()}>
                     Fire employee
                 </Button>
             </View>
