@@ -1,11 +1,18 @@
-import Constants from 'expo-constants'
-import React from 'react';
+import React, { createContext, useReducer } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Home from './src/screens/Home'
 import CreateEmployee from './src/screens/CreateEmployee'
 import Profile from './src/screens/Profile'
-import { NavigationContainer } from '@react-navigation/native';
+
+import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+import { reducer, initState } from './src/reducers/reducer'
+
+//const store = createStore(reducer)
+
+export const MyContext = createContext()
 
 const Stack = createStackNavigator()
 
@@ -29,10 +36,17 @@ function App() {
 }
 
 export default () => {
+
+  const [state, dispatch] = useReducer(reducer, initState)
+
   return (
-    <NavigationContainer>
-      <App />
-    </NavigationContainer>
+    <MyContext.Provider value={
+      { state, dispatch }
+    }>
+      <NavigationContainer>
+        <App />
+      </NavigationContainer>
+    </MyContext.Provider>
   )
 }
 
