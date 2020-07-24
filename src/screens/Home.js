@@ -32,8 +32,13 @@ const Home = ({navigation}) => {
     }
 
     useEffect(() => {
-        fetchData()
-    },[])
+        const unsubscribe = navigation.addListener('focus', () => {
+            fetchData()
+        });
+        return unsubscribe
+    },[navigation])
+
+
     const renderList = ((item) => {
         return (
             <Card style={styles.myCard} onPress={() => navigation.navigate("Profile", {item})}>
