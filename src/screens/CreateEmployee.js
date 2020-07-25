@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import { StyleSheet, Text, View, Modal, Alert, KeyboardAvoidingView } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
 import * as ImagePicker from 'expo-image-picker'
+const {cloudinaryURL} = require('../keys')
 
 const CreateEmployee = ({ navigation, route }) => {
     const getDetails = (type) => {
@@ -128,7 +129,7 @@ const CreateEmployee = ({ navigation, route }) => {
         data.append('upload_preset', 'employeeApp')
         data.append("cloud_name", "guilhermefa")
 
-        fetch("https://api.cloudinary.com/v1_1/guilhermefa/image/upload", {
+        fetch(cloudinaryURL, {
             method: "post",
             body: data
         }).then(res => res.json()).then(data => {
