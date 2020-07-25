@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import { StyleSheet, Text, View, Modal, Alert, KeyboardAvoidingView } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
 import * as ImagePicker from 'expo-image-picker'
-const {cloudinaryURL} = require('../keys')
+const {cloudinaryURL, cloud_name} = require('../keys')
 
 const CreateEmployee = ({ navigation, route }) => {
     const getDetails = (type) => {
@@ -127,7 +127,7 @@ const CreateEmployee = ({ navigation, route }) => {
         const data = new FormData()
         data.append('file', image)
         data.append('upload_preset', 'employeeApp')
-        data.append("cloud_name", "guilhermefa")
+        data.append("cloud_name", cloud_name)
 
         fetch(cloudinaryURL, {
             method: "post",
