@@ -2,16 +2,22 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
-require('./Employee')
-require('./.env')// import of .env with your mongoDB Connection and password
+require('./models/User')
+require('./models/Employee')
+const requireToken = require('./middleware/requireToken')
+const {CONNECTION} = require('../keys')// import of secret key with your mongoDB Connection and password
+const authRoutes = require('./routes/authRoutes')
+const { useReducer } = require('react')
 
 app.use(bodyParser.json())
-const Employee = mongoose.model("employee");
+app.use(authRoutes)
+const Employee = mongoose.model("employee")
 
 const mongoUri = CONNECTION// imported of .env (mongoDB connection)
 mongoose.connect(mongoUri, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useCreateIndex: true
 })
 
 mongoose.connection.on("connected", () => {
@@ -24,12 +30,16 @@ mongoose.connection.on("error", (err) => {
 
 mongoose.set('useFindAndModify', false);
 
-app.get('/', (req, res) => {
+app.get('/', requireToken, (req, res) => {
     Employee.find({}).then(data => {
         res.send(data)
     }).catch(err => {
         console.log(err)
     })
+})
+
+app.get('/auth', requireToken, (req, res) => {
+    res.send('your email is '+ req.user.email)
 })
 
 app.post('/send-data', (req, res) => {
