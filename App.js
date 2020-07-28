@@ -3,6 +3,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import Home from './src/screens/Home'
 import CreateEmployee from './src/screens/CreateEmployee'
 import Profile from './src/screens/Profile'
+import Login from './src/screens/Login'
+import CreateAccount from './src/screens/CreateAccount'
 
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
@@ -27,6 +29,8 @@ function App() {
   return (
     <View style={styles.container}>
       <Stack.Navigator>
+        <Stack.Screen name="CreateAccount" component={CreateAccount} options={{...myOptions, title: "Sign up"}} />
+        <Stack.Screen name="Login" component={Login} options={{...myOptions, title: "Sign in"}} />
         <Stack.Screen name="Home" component={Home} options={myOptions} />
         <Stack.Screen name="Create" component={CreateEmployee} options={{...myOptions, title: "Create Employee"}} />
         <Stack.Screen name="Profile" component={Profile} options={{...myOptions, title: "Profile"}} />

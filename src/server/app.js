@@ -30,7 +30,7 @@ mongoose.connection.on("error", (err) => {
 
 mongoose.set('useFindAndModify', false);
 
-app.get('/', requireToken, (req, res) => {
+app.get('/', (req, res) => {
     Employee.find({}).then(data => {
         res.send(data)
     }).catch(err => {
