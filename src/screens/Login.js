@@ -1,32 +1,39 @@
-import React, { useEffec, useState, useEffect, useContext } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, {useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import { Button, TextInput } from 'react-native-paper'
 
 const Login = ({navigation}) => {
+    const [enableShift, setEnableShift] = useState(false)
     return (
-        <View>
+        <KeyboardAvoidingView>
             <TextInput
                 label="Email"
                 style={styles.inputStyle}
                 theme={theme}
                 keyboardType="email-address"
                 mode="outlined"
+                onFocus={() => setEnableShift(false)}
             />    
             <TextInput
                 label="Password"
                 style={styles.inputStyle}
                 theme={theme}
+                secureTextEntry={true}
                 mode="outlined"
+                onFocus={() => setEnableShift(false)}
                 
             />
                     
             <Button mode="contained" theme={theme} style={styles.inputStyle} onPress={() => console.log("Pressed")}>
                 Log in
             </Button>
-            <Text style={styles.textStyle}>
-                Create a new account
-            </Text>  
-        </View>
+            <TouchableOpacity onPress={() => navigation.navigate("CreateAccount")}>
+                <Text style={styles.textStyle}>
+                    Create a new account
+                </Text>    
+            </TouchableOpacity>
+            
+        </KeyboardAvoidingView>
     )
 }
 
