@@ -1,13 +1,13 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, View, Modal, Alert, KeyboardAvoidingView } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
 import * as ImagePicker from 'expo-image-picker'
-const {cloudinaryURL, cloud_name} = require('../keys')
+const { cloudinaryURL, cloud_name } = require('../keys')
 
 const CreateEmployee = ({ navigation, route }) => {
     const getDetails = (type) => {
-        if(route.params) {
-            switch(type) {
+        if (route.params) {
+            switch (type) {
                 case "name":
                     return route.params.name
                     break
@@ -26,12 +26,12 @@ const CreateEmployee = ({ navigation, route }) => {
                 case "position":
                     return route.params.position
                     break
-                 
+
             }
         }
         return ""
     }
-    
+
 
     const [name, setName] = useState(getDetails("name"))
     const [phone, setPhone] = useState(getDetails("phone"))
@@ -45,7 +45,7 @@ const CreateEmployee = ({ navigation, route }) => {
     const submitData = () => {
         fetch("http://10.0.2.2:3000/send-data", {
             method: "post",
-            headers:{
+            headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
@@ -59,7 +59,7 @@ const CreateEmployee = ({ navigation, route }) => {
         }).then(res => res.json()).then(data => {
             Alert.alert(`${data.name} is saved successful!`)
             navigation.navigate("Home")
-        }).catch(err=>{
+        }).catch(err => {
             Alert.alert("someting went wrong")
         })
     }
@@ -67,7 +67,7 @@ const CreateEmployee = ({ navigation, route }) => {
     const updateDetails = () => {
         fetch("http://10.0.2.2:3000/update", {
             method: "post",
-            headers:{
+            headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
@@ -82,22 +82,22 @@ const CreateEmployee = ({ navigation, route }) => {
         }).then(res => res.json()).then(data => {
             Alert.alert(`${data.name} is updated!`)
             navigation.navigate("Home")
-        }).catch(err=>{
+        }).catch(err => {
             Alert.alert("someting went wrong")
         })
     }
 
     const pickFromGallery = async () => {
         const { granted } = await ImagePicker.requestCameraRollPermissionsAsync()
-        if(granted) {
+        if (granted) {
             let data = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: true,
-                aspect:[1,1],
-                quality:0.5
+                aspect: [1, 1],
+                quality: 0.5
             })
-            if(!data.cancelled) {
-                let newFile ={ uri: data.uri, type: `test/${data.uri.split(".")[1]}`, name: `test.${data.uri.split(".")[1]}` }
+            if (!data.cancelled) {
+                let newFile = { uri: data.uri, type: `test/${data.uri.split(".")[1]}`, name: `test.${data.uri.split(".")[1]}` }
                 handleUpload(newFile)
             }
         } else {
@@ -107,15 +107,15 @@ const CreateEmployee = ({ navigation, route }) => {
 
     const pickFromCamera = async () => {
         const { granted } = await ImagePicker.requestCameraPermissionsAsync()
-        if(granted) {
+        if (granted) {
             let data = await ImagePicker.launchCameraAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: true,
-                aspect:[1,1],
-                quality:0.5
+                aspect: [1, 1],
+                quality: 0.5
             })
-            if(!data.cancelled) {
-                let newFile ={ uri: data.uri, type: `test/${data.uri.split(".")[1]}`, name: `test.${data.uri.split(".")[1]}` }
+            if (!data.cancelled) {
+                let newFile = { uri: data.uri, type: `test/${data.uri.split(".")[1]}`, name: `test.${data.uri.split(".")[1]}` }
                 handleUpload(newFile)
             }
         } else {
@@ -135,7 +135,7 @@ const CreateEmployee = ({ navigation, route }) => {
         }).then(res => res.json()).then(data => {
             setPicture(data.url)
             setModal(false)
-        }).catch(err=>{
+        }).catch(err => {
             Alert.alert("erro while uploading")
         })
     }
@@ -143,88 +143,88 @@ const CreateEmployee = ({ navigation, route }) => {
     return (
         <KeyboardAvoidingView behavior="position" style={styles.root} enabled={enableShift}>
             <View>
-                    <TextInput
-                        label="Name"
-                        value={name}
-                        style={styles.inputStyle}
-                        theme={theme}
-                        onFocus={() => setEnableShift(false)}
-                        mode="outlined"
-                        onChangeText={text => setName(text)}
-                    />
-                    <TextInput
-                        label="Email"
-                        value={email}
-                        style={styles.inputStyle}
-                        theme={theme}
-                        keyboardType="email-address"
-                        onFocus={() => setEnableShift(false)}
-                        mode="outlined"
-                        onChangeText={text => setEmail(text)}
-                    />
-                    <TextInput
-                        label="Phone"
-                        value={phone}
-                        style={styles.inputStyle}
-                        theme={theme}
-                        keyboardType="number-pad"
-                        onFocus={() => setEnableShift(false)}
-                        mode="outlined"
-                        onChangeText={text => setPhone(text)}
-                    />
-                    <TextInput
-                        label="Salary"
-                        value={salary}
-                        style={styles.inputStyle}
-                        theme={theme}
-                        keyboardType="decimal-pad"
-                        onFocus={() => setEnableShift(true)}
-                        mode="outlined"
-                        onChangeText={text => setSalary(text)}
-                    />
-                    <TextInput
-                        label="Position"
-                        value={position}
-                        style={styles.inputStyle}
-                        theme={theme}
-                        onFocus={() => setEnableShift(true)}
-                        mode="outlined"
-                        onChangeText={text => setPosition(text)}
-                    />
-                    <Button icon={picture==""?"upload":"check"} mode="contained" style={styles.inputStyle} theme={theme} onPress={() => setModal(true)}>
-                        Upload Image
+                <TextInput
+                    label="Name"
+                    value={name}
+                    style={styles.inputStyle}
+                    theme={theme}
+                    onFocus={() => setEnableShift(false)}
+                    mode="outlined"
+                    onChangeText={text => setName(text)}
+                />
+                <TextInput
+                    label="Email"
+                    value={email}
+                    style={styles.inputStyle}
+                    theme={theme}
+                    keyboardType="email-address"
+                    onFocus={() => setEnableShift(false)}
+                    mode="outlined"
+                    onChangeText={text => setEmail(text)}
+                />
+                <TextInput
+                    label="Phone"
+                    value={phone}
+                    style={styles.inputStyle}
+                    theme={theme}
+                    keyboardType="number-pad"
+                    onFocus={() => setEnableShift(false)}
+                    mode="outlined"
+                    onChangeText={text => setPhone(text)}
+                />
+                <TextInput
+                    label="Salary"
+                    value={salary}
+                    style={styles.inputStyle}
+                    theme={theme}
+                    keyboardType="decimal-pad"
+                    onFocus={() => setEnableShift(true)}
+                    mode="outlined"
+                    onChangeText={text => setSalary(text)}
+                />
+                <TextInput
+                    label="Position"
+                    value={position}
+                    style={styles.inputStyle}
+                    theme={theme}
+                    onFocus={() => setEnableShift(true)}
+                    mode="outlined"
+                    onChangeText={text => setPosition(text)}
+                />
+                <Button icon={picture == "" ? "upload" : "check"} mode="contained" style={styles.inputStyle} theme={theme} onPress={() => setModal(true)}>
+                    Upload Image
                     </Button>
-                    {route.params ? 
-                        <Button icon="content-save" mode="contained" style={styles.inputStyle} theme={theme} onPress={() => updateDetails()}>
-                            Update
+                {route.params ?
+                    <Button icon="content-save" mode="contained" style={styles.inputStyle} theme={theme} onPress={() => updateDetails()}>
+                        Update
                         </Button>
-                        :<Button icon="content-save" mode="contained" style={styles.inputStyle} theme={theme} onPress={() => submitData()}>
-                            Save
+                    : <Button icon="content-save" mode="contained" style={styles.inputStyle} theme={theme} onPress={() => submitData()}>
+                        Save
                         </Button>
-                    }
-                    
-                    <Modal
-                        animationType="slide"
-                        transparent={true}
-                        visible={modal}
-                        onRequestClose={() => {setModal(false)}}
-                    >
-                        <View style={styles.modalView}>
-                            <View style={styles.modalButtonView}>
-                                <Button icon="camera" mode="contained" theme={theme} onPress={() => pickFromCamera()}>
-                                    Camera
+                }
+
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modal}
+                    onRequestClose={() => { setModal(false) }}
+                >
+                    <View style={styles.modalView}>
+                        <View style={styles.modalButtonView}>
+                            <Button icon="camera" mode="contained" theme={theme} onPress={() => pickFromCamera()}>
+                                Camera
                                 </Button>
 
-                                <Button icon="image-area" mode="contained" theme={theme} onPress={() => pickFromGallery()}>
-                                    Gallery
+                            <Button icon="image-area" mode="contained" theme={theme} onPress={() => pickFromGallery()}>
+                                Gallery
                                 </Button>
-                            </View>
-
-                            <Button theme={theme} onPress={() => setModal(false)}>
-                                Cancel
-                            </Button>
                         </View>
-                    </Modal>
+
+                        <Button theme={theme} onPress={() => setModal(false)}>
+                            Cancel
+                            </Button>
+                    </View>
+                </Modal>
             </View>
         </KeyboardAvoidingView>
     )

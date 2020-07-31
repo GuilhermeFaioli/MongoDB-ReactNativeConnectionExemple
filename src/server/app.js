@@ -39,7 +39,7 @@ app.get('/', requireToken, (req, res) => {
 })
 
 app.get('/auth', requireToken, (req, res) => {
-    res.send('your email is '+ req.user.email)
+    res.send({name: req.user.name})
 })
 
 app.post('/send-data', (req, res) => {

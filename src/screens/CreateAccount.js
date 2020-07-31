@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, Platform, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import { Button, TextInput } from 'react-native-paper'
 import DateTimePicker from '@react-native-community/datetimepicker'
+import AsyncStorage from '@react-native-community/async-storage'
 
-const CreateAccount = ({navigation}) => {
+const CreateAccount = ({ navigation }) => {
     const [date, setDate] = useState(new Date(1598051730000));
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
@@ -39,70 +40,75 @@ const CreateAccount = ({navigation}) => {
                 "name": name,
                 "Date": date
             })
-        }).then(res => res.json()).then(data => {
-            console.log(data)
+        }).then(res => res.json()).then(async (data) => {
+            try {
+                await AsyncStorage.setItem('token', data.token)
+                navigation.replace("Home")
+            } catch (e) {
+                console.log("Error: " + e)
+            }
         })
-            
+
     }
 
 
     return (
-            <KeyboardAvoidingView behavior="position" enabled={enableShift}>
-                <TextInput
-                    label="Name"
-                    
-                    style={styles.inputStyle}
-                    theme={theme}
-                    mode="outlined"
-                    onFocus={() => setEnableShift(false)}
-                    value={name}
-                    onChangeText={(text) => setName(text)}
+        <KeyboardAvoidingView behavior="position" enabled={enableShift}>
+            <TextInput
+                label="Name"
+
+                style={styles.inputStyle}
+                theme={theme}
+                mode="outlined"
+                onFocus={() => setEnableShift(false)}
+                value={name}
+                onChangeText={(text) => setName(text)}
+            />
+
+            <Button mode="contained" style={styles.buttonDate} theme={theme} onPress={showDatepicker} icon="calendar">Birthday</Button>
+
+            {show && (
+                <DateTimePicker
+                    testID="dateTimePicker"
+                    value={date}
+                    mode={mode}
+                    is24Hour={true}
+                    display="default"
+                    onChange={onChange}
                 />
-                
-                <Button mode="contained" style={styles.buttonDate} theme={theme} onPress={showDatepicker} icon="calendar">Birthday</Button>
-
-                {show && (
-                    <DateTimePicker
-                        testID="dateTimePicker"
-                        value={date}
-                        mode={mode}
-                        is24Hour={true}
-                        display="default"
-                        onChange={onChange}
-                    />
-                )}
+            )}
 
 
-                <TextInput
-                    label="Email"
-                    style={styles.inputStyle}
-                    theme={theme}
-                    keyboardType="email-address"
-                    mode="outlined"
-                    onFocus={() => setEnableShift(false)}
-                    value={email}
-                    onChangeText={(text) => setEmail(text)}
-                />    
-                <TextInput
-                    label="Password"
-                    style={styles.inputStyle}
-                    theme={theme}
-                    mode="outlined"
-                    secureTextEntry={true}
-                    onFocus={() => setEnableShift(false)}
-                    value={password}
-                    onChangeText={(text) => setPassword(text)}
-                />
-                        
-                <Button mode="contained" theme={theme} style={styles.inputStyle} onPress={() => sendCred()}>
-                    Sign up
+            <TextInput
+                label="Email"
+                style={styles.inputStyle}
+                theme={theme}
+                keyboardType="email-address"
+                mode="outlined"
+                onFocus={() => setEnableShift(false)}
+                value={email}
+                onChangeText={(text) => setEmail(text)}
+            />
+            <TextInput
+                label="Password"
+                style={styles.inputStyle}
+                theme={theme}
+                mode="outlined"
+                secureTextEntry={true}
+                onFocus={() => setEnableShift(false)}
+                value={password}
+                onChangeText={(text) => setPassword(text)}
+            />
+
+            <Button mode="contained" theme={theme} style={styles.inputStyle} onPress={() => sendCred()}>
+                Sign up
                 </Button>
-                <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-                    <Text style={styles.textStyle}>
-                        Already have a account?
-                    </Text>  
-                </TouchableOpacity>
-            </KeyboardAvoidingView>
+            <TouchableOpacity onPress={() => navigation.replace("Login")}>
+                <Text style={styles.textStyle}>
+                    Already have a account?
+                    </Text>
+            </TouchableOpacity>
+        </KeyboardAvoidingView>
     )
 }
 

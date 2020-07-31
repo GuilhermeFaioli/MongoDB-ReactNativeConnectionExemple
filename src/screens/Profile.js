@@ -6,26 +6,26 @@ import { MaterialIcons, Entypo } from '@expo/vector-icons'
 import CreateEmployee from './CreateEmployee'
 
 const Profile = (props) => {
-    const {_id, name, picture, salary, phone, position, email} = props.route.params.item
+    const { _id, name, picture, salary, phone, position, email } = props.route.params.item
     const deleteEmployee = () => {
         fetch("http://10.0.2.2:3000/delete", {
             method: "post",
-            headers:{
+            headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
                 id: _id
             })
-        }).then(res=> res.json())
-        .then(deletedEmp => {
-            Alert.alert(`${deletedEmp.name} deleted`)
-            props.navigation.navigate("Home")
-        }).catch(err=>{
-            Alert.alert("someting went wrong")
-        })
+        }).then(res => res.json())
+            .then(deletedEmp => {
+                Alert.alert(`${deletedEmp.name} deleted`)
+                props.navigation.navigate("Home")
+            }).catch(err => {
+                Alert.alert("someting went wrong")
+            })
     }
     const openDial = () => {
-        if(Platform.OS === "android") {
+        if (Platform.OS === "android") {
             Linking.openURL(`tel: ${phone}`)
         } else {
             Linking.openURL(`telprompt: ${phone}`)
@@ -34,19 +34,19 @@ const Profile = (props) => {
 
     return (
         <View style={styles.root}>
-            <LinearGradient 
+            <LinearGradient
                 colors={["#0033ff", "#6bc1ff"]}
-                style={{height: "20%"}}
+                style={{ height: "20%" }}
             />
-            <View style={{alignItems: "center"}}>
-               <Image 
-                    style={{width: 140, height: 140, borderRadius: 140/2, marginTop: -50}}
-                    source={{uri: picture}}
-                /> 
+            <View style={{ alignItems: "center" }}>
+                <Image
+                    style={{ width: 140, height: 140, borderRadius: 140 / 2, marginTop: -50 }}
+                    source={{ uri: picture }}
+                />
             </View>
-            <View style={{alignItems: "center", margin: 15}}>
+            <View style={{ alignItems: "center", margin: 15 }}>
                 <Title>{name}</Title>
-                <Text style={{fontSize: 15}}>{position}</Text>
+                <Text style={{ fontSize: 15 }}>{position}</Text>
             </View>
             <Card style={styles.myCard} onPress={() => {
                 Linking.openURL(`mailto:${email}`)
@@ -58,24 +58,24 @@ const Profile = (props) => {
             </Card>
             <Card style={styles.myCard} onPress={() => openDial()}>
                 <View style={styles.cardContent}>
-                <Entypo name="phone" size={24} color="#006aff" />
+                    <Entypo name="phone" size={24} color="#006aff" />
                     <Text style={styles.myText}>{phone}</Text>
                 </View>
             </Card>
             <Card style={styles.myCard}>
                 <View style={styles.cardContent}>
-                <MaterialIcons name="attach-money" size={24} color="#006aff" />
+                    <MaterialIcons name="attach-money" size={24} color="#006aff" />
                     <Text style={styles.myText}>{salary}</Text>
                 </View>
             </Card>
 
             <View style={styles.buttonView}>
-                <Button icon="account-edit" theme={theme} mode="contained" 
+                <Button icon="account-edit" theme={theme} mode="contained"
                     onPress={() => {
                         props.navigation.navigate("Create",
-                        {_id, name, picture, salary, phone, position, email})
+                            { _id, name, picture, salary, phone, position, email })
                     }
-                }>
+                    }>
                     Edit
                 </Button>
                 <Button icon="delete" theme={theme} mode="contained" onPress={() => deleteEmployee()}>
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         padding: 8
     },
-    myText:{
+    myText: {
         fontSize: 18
     },
     buttonView: {

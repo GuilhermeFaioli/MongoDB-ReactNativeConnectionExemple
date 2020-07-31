@@ -12,7 +12,9 @@ router.post('/signup', async (req, res) => {
 
     const user = new User({
         email: req.body.email,
-        password: req.body.password
+        password: req.body.password,
+        name: req.body.name,
+        Date: req.body.Date
     })
     user.save().then(data => {
         console.log(data)
